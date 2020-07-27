@@ -1,0 +1,24 @@
+{
+  "name": "protagonist",
+  "version": "1.0.0",
+  "description": "Discord bot for Pocket Protagonists - Ravencrest",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpsmith83/protagonist.git"
+  },
+  "author": "Gareth Walkersmith",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/gpsmith83/protagonist/issues"
+  },
+  "homepage": "https://github.com/gpsmith83/protagonist#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "eslint": "^7.5.0",
+    "firebase-admin": "^9.0.0"
+  }
+}

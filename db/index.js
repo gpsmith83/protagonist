@@ -66,6 +66,19 @@ async function hasImmunity(className) {
 	return returnVal;
 }
 
+async function createAssignment(username, classId, roleId, userTag, userId) {
+	db.collection('assignments').add({ username: username, class_id: classId, role_id: roleId, user_tag: userTag, user_id: userId }).then(
+		docRef => console.log(docRef.id),
+	);
+}
+
+async function removeAssignment(userId, classId, roleId) {
+	const assignments = await db.collection('assignments').where('user_id', '==', userId).where('class_id', '==', classId).where('role_id', '==', roleId).get();
+	if (!assignments.empty) {
+		assignments.forEach(docRef => docRef.ref.delete());
+	}
+}
+
 module.exports = {
 	canTank,
 	canHeal,
@@ -73,4 +86,6 @@ module.exports = {
 	canRdps,
 	hasImmunity,
 	getRoles,
+	createAssignment,
+	removeAssignment,
 };

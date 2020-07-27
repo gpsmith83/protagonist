@@ -22,7 +22,55 @@ async function canTank(className) {
 	return returnVal;
 }
 
+async function canHeal(className) {
+	let returnVal = false;
+	const snapshot = await db.collection('classes').where('can_heal', '==', true).get();
+	snapshot.forEach(classEntry => {
+		if (classEntry.id == className) {
+			returnVal = true;
+		}
+	});
+	return returnVal;
+}
+
+async function canMdps(className) {
+	let returnVal = false;
+	const snapshot = await db.collection('classes').where('can_mdps', '==', true).get();
+	snapshot.forEach(classEntry => {
+		if (classEntry.id == className) {
+			returnVal = true;
+		}
+	});
+	return returnVal;
+}
+
+async function canRdps(className) {
+	let returnVal = false;
+	const snapshot = await db.collection('classes').where('can_rdps', '==', true).get();
+	snapshot.forEach(classEntry => {
+		if (classEntry.id == className) {
+			returnVal = true;
+		}
+	});
+	return returnVal;
+}
+
+async function hasImmunity(className) {
+	let returnVal = false;
+	const snapshot = await db.collection('classes').where('has_immunity', '==', true).get();
+	snapshot.forEach(classEntry => {
+		if (classEntry.id == className) {
+			returnVal = true;
+		}
+	});
+	return returnVal;
+}
+
 module.exports = {
 	canTank,
+	canHeal,
+	canMdps,
+	canRdps,
+	hasImmunity,
 	getRoles,
 };

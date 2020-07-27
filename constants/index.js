@@ -4,5 +4,12 @@ module.exports = {
 	mdpsMsg :'__***Melee DPS***__',
 	rdpsMsg :'__***Ranged DPS***__',
 	helpMsg :'React to the roles below with the class you will be using, there are reactions for each class.  If you are planning to maintain more than one class/spec then react as many times as needed!',
-
-}
+	setupCommand: 'setup',
+	tanksCommand: 'tank',
+	healerCommand: 'healer',
+	mdpsCommand: 'mdps',
+	rdpsCommand: 'rdps',
+	immunitiesCommand: 'immunities',
+	rolesCommand: 'roles',
+	classesCommand: 'classes',
+};

@@ -23,11 +23,6 @@ async function handleReactionAdd(reaction, user) {
 			await db.createAssignment(user.username, reaction.emoji.name, '01', user.tag, user.id);
 		}
 	}
-
-	// Now the message has been cached and is fully available
-	console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a "${reaction.emoji.name}" from "${user.tag}"!`);
-	// The reaction is now also fully available and the properties will be reflected accurately:
-	console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
 }
 
 async function handleReactionRemove(reaction, user) {

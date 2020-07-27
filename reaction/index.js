@@ -1,6 +1,8 @@
 const db = require('../db');
 const constants = require('../constants');
 
+let localData = [];
+
 async function handleReactionAdd(reaction, user) {
 	if (reaction.partial) {
 		try {
@@ -20,6 +22,14 @@ async function handleReactionAdd(reaction, user) {
 		else {
 			// Now we want to add this person to the database of assignments
 			console.log([user.username, reaction.emoji.name, '01', user.tag, user.id].join(','));
+			localData.push({
+				username: user.username,
+				classId: reaction.emoji.name,
+				roleId: '01',
+				userTag: user.tag,
+				userId: user.id,
+			});
+			console.log(localData);
 		}
 	}
 
@@ -29,11 +39,14 @@ async function handleReactionAdd(reaction, user) {
 	console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
 }
 
-function handleReactionRemove(reaction, user){
-
+async function handleReactionRemove(reaction, user) {
+	localData = localData.filter(el => {
+		return !(el.userId == user.id && el.classId == reaction.emoji.name);
+	});
+	console.log(localData);
 }
 
 module.exports = {
-    handleReactionAdd,
-    handleReactionRemove,
+	handleReactionAdd,
+	handleReactionRemove,
 };

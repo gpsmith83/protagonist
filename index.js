@@ -14,18 +14,6 @@ client.on('message', handleCommand);
 
 client.on('messageReactionAdd', handleReactionAdd);
 
-client.on('messageReactionRemove', async (reaction, user) => {
-	console.log(user.id);
-	if (reaction.partial) {
-		try {
-			await reaction.fetch();
-		}
-		catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
-			// Return as `reaction.message.author` may be undefined/null
-			return;
-		}
-	}
-});
+client.on('messageReactionRemove', handleReactionRemove);
 
 client.login(process.env.DISCORD_CLIENT_TOKEN);

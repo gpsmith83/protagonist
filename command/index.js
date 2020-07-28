@@ -29,6 +29,9 @@ async function handleCommand(message) {
 	else if (command === constants.rdpsCommand) {
 		sendMessageForRole('Rdps', '04', message);
 	}
+	else if (command === constants.immunitiesCommand) {
+		sendMessageForImmunities(message);
+	}
 	else if (command === constants.rolesCommand) {
 		const channel = message.channel;
 		const canvas = Canvas.createCanvas(700, 250);
@@ -96,8 +99,13 @@ async function handleCommand(message) {
 }
 
 async function sendMessageForRole(roleStr, roleId, message) {
-	const players = (await db.getPlayersForRole(roleId)).map(assignment => assignment.user_tag).join(', ');
+	const players = (await db.getPlayersForRole(roleId)).map(assignment => assignment.user_tag).filter((v, i, s) => s.indexOf(v) === i).join(', ');
 	message.channel.send(roleStr + ': ' + players);
+}
+
+async function sendMessageForImmunities(message) {
+	const players = (await db.getPlayersWithImmunities()).map(assignment => assignment.user_tag).filter((v, i, s) => s.indexOf(v) === i).join(', ');
+	message.channel.send('Immunities: ' + players);
 }
 
 function doSetup(message) {

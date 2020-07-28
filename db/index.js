@@ -84,6 +84,14 @@ async function getPlayersForRole(roleId) {
 	return assignments.docs.map(doc => doc.data());
 }
 
+async function getPlayersWithImmunities() {
+	const classesWithImmunitiesSnapshot = await db.collection('classes').where('has_immunity', '==', true).get();
+	const classesWithImmunities = classesWithImmunitiesSnapshot.docs.map(doc => doc.id);
+	const players = await db.collection('assignments').where('class_id', 'in', classesWithImmunities).get();
+	return players.docs.map(doc => doc.data());
+
+}
+
 async function getPlayers() {
 	const assignments = await db.collection('assignments').get();
 	return assignments.docs.map(doc => doc.data());
@@ -100,4 +108,5 @@ module.exports = {
 	removeAssignment,
 	getPlayersForRole,
 	getPlayers,
+	getPlayersWithImmunities,
 };

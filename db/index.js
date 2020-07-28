@@ -5,7 +5,7 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-function getRoles() {
+async function getRoles() {
 	db.collection('roles').get().then((results) => {
 		results.docs.forEach(doc => console.log(doc.id, '=>', doc.data()));
 	});
@@ -79,6 +79,16 @@ async function removeAssignment(userId, classId, roleId) {
 	}
 }
 
+async function getPlayersForRole(roleId) {
+	const assignments = await db.collection('assignments').where('role_id', '==', roleId).get();
+	return assignments.docs.map(doc => doc.data());
+}
+
+async function getPlayers() {
+	const assignments = await db.collection('assignments').get();
+	return assignments.docs.map(doc => doc.data());
+}
+
 module.exports = {
 	canTank,
 	canHeal,
@@ -88,4 +98,6 @@ module.exports = {
 	getRoles,
 	createAssignment,
 	removeAssignment,
+	getPlayersForRole,
+	getPlayers,
 };

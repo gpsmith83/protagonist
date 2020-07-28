@@ -18,11 +18,43 @@ async function handleReactionAdd(reaction, user) {
 			reaction.remove();
 		}
 		else {
-			// Now we want to add this person to the database of assignments
-			console.log([user.username, reaction.emoji.name, '01', user.tag, user.id].join(','));
-			await db.createAssignment(user.username, reaction.emoji.name, '01', user.tag, user.id);
+			createAssignment('01', user, reaction);
 		}
 	}
+	else if (reaction.message.content == constants.healerMsg) {
+		if (!await db.canHeal(reaction.emoji.name)) {
+			// Someone made a mistake or was being funny...
+			reaction.remove();
+		}
+		else {
+			createAssignment('02', user, reaction);
+
+		}
+	}
+	else if (reaction.message.content == constants.mdpsMsg) {
+		if (!await db.canMdps(reaction.emoji.name)) {
+			// Someone made a mistake or was being funny...
+			reaction.remove();
+		}
+		else {
+			createAssignment('03', user, reaction);
+
+		}
+	}
+	else if (reaction.message.content == constants.rdpsMsg) {
+		if (!await db.canRdps(reaction.emoji.name)) {
+			// Someone made a mistake or was being funny...
+			reaction.remove();
+		}
+		else {
+			createAssignment('04', user, reaction);
+		}
+	}
+}
+
+async function createAssignment(roleId, user, reaction) {
+	console.log([user.username, reaction.emoji.name, roleId, user.tag, user.id].join(','));
+	await db.createAssignment(user.username, reaction.emoji.name, roleId, user.tag, user.id);
 }
 
 async function handleReactionRemove(reaction, user) {

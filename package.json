@@ -19,6 +19,7 @@
   "homepage": "https://github.com/gpsmith83/protagonist#readme",
   "dependencies": {
     "canvas": "^2.6.1",
+    "d3-node": "^2.2.2",
     "discord.js": "^12.2.0",
     "eslint": "^7.5.0",
     "firebase-admin": "^9.0.0"

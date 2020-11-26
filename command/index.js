@@ -4,6 +4,26 @@ const constants = require('../constants');
 const db = require('../db');
 const barchart = require('../barchart');
 
+const moment = require('moment');
+const BlizzAPI = require('blizzapi');
+
+const dungeons = {
+	'Sanguine Depths':false,
+	'The Necrotic Wake':false,
+	'Mists of Tirna Scithe':false,
+	'Halls of Atonement':false,
+	'Spires of Ascension':false,
+	'Theater of Pain':false,
+	'De Other Side':false,
+	'Plaguefall':false,
+};
+
+const api = new BlizzAPI({
+	region: 'eu',
+	clientId: process.env.BLIZZ_CLIENT_ID,
+	clientSecret: process.env.BLIZZ_CLIENT_SECRET,
+});
+
 const prefix = '!';
 
 const roles = { '01': 'Tank', '02': 'Healer', '03': 'Mdps', '04': 'Rdps' };
@@ -28,6 +48,9 @@ async function handleCommand(message) {
 	}
 	else if (command === constants.rdpsCommand) {
 		sendMessageForRole('Rdps', '04', message);
+	}
+	else if (command == constants.mythic0Command) {
+		sendMythic0Response(args.shift().toLowerCase(), message);
 	}
 	else if (command === constants.immunitiesCommand) {
 		sendMessageForImmunities(message);
@@ -114,6 +137,32 @@ function doSetup(message) {
 	message.channel.send(constants.healerMsg);
 	message.channel.send(constants.mdpsMsg);
 	message.channel.send(constants.rdpsMsg);
+}
+
+function sendMythic0Response(character, message) {
+	console.log(character);
+	api.query('/profile/wow/character/ravencrest/' + character + '/encounters/dungeons?namespace=profile-eu&locale=en_US').then(result => extractM0(character, result, message)).catch(err => {
+		console.log(err);
+		message.channel.send('No results found for ' + character);
+	});
+}
+
+function extractM0(character, result, message) {
+	const wedsReset = moment().isoWeekday(3).hour(8);
+	const shadowlands = result.expansions.filter(expansion => expansion.expansion.id == 499);
+	if (shadowlands && shadowlands[0]) {
+		const mythicMap = Object.assign({}, dungeons);
+		shadowlands[0].instances.forEach(instance => {
+			const mythic = instance.modes.filter(mode => mode.difficulty.type == 'MYTHIC');
+			if (mythic && mythic[0]) {
+				mythicMap[instance.instance.name] = moment(mythic[0].progress.encounters[0].last_kill_timestamp).isSameOrAfter(wedsReset, 'day');
+			}
+		});
+		message.channel.send('M0 completion for ' + character + '\n' + Object.entries(mythicMap).map(entry => { return entry[0] + ': ' + entry[1]; }).join('\n'));
+	}
+	else {
+		message.channel.send('No results found for ' + character);
+	}
 }
 
 module.exports = {

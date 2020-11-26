@@ -12,4 +12,5 @@ module.exports = {
 	immunitiesCommand: 'immunities',
 	rolesCommand: 'roles',
 	classesCommand: 'classes',
+	mythic0Command: 'mythic0',
 };

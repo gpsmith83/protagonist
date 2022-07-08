@@ -25,6 +25,6 @@
     "dotenv": "^8.2.0",
     "eslint": "^7.5.0",
     "firebase-admin": "^9.4.1",
-    "moment": "^2.29.1"
+    "moment": "^2.29.4"
   }
 }
